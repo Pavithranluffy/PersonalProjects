@@ -23,6 +23,9 @@ public class job {
         return id;
     }
 
+    public void addid(){
+        this.id = this.id + 1L;
+    }
     public void setId(Long id) {
         this.id = id;
     }

@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class JobServiceImpl implements JobService {
     List<job> jobs = new ArrayList<>();
+    private  Long nextId = 1L ;
     @Override
     public List<job> getallJobs() {
       return jobs;
@@ -18,6 +19,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void addJob(job Jobadd) {
+        //Incrementing the ID for every calll for unique value
+        Jobadd.setId(nextId++);
         jobs.add(Jobadd);
 
     }
