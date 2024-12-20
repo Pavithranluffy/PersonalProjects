@@ -24,4 +24,16 @@ public class JobServiceImpl implements JobService {
         jobs.add(Jobadd);
 
     }
+
+    @Override
+    public job getJobById(Long jobsearch) {
+        for(job jobshare : jobs){
+            if(jobshare.getId().equals(jobsearch)){
+                return jobshare;
+            }
+            return  null;
+
+        }
+return null;
+    }
 }
