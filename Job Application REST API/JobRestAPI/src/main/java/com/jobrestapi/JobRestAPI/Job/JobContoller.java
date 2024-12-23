@@ -35,4 +35,16 @@ public class JobContoller
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
+
+    @DeleteMapping("/jobs/{id}")
+    public ResponseEntity  DeleteJobById(@PathVariable Long id){
+       boolean result =  jobService.DeleteJobByID(id);
+       if(result){
+           return new ResponseEntity<>("Job Deleted Successfully",HttpStatus.OK);
+        }
+       return  new ResponseEntity<>("Id Not founded ",HttpStatus.NOT_FOUND);
+
+
+
+    }
 }

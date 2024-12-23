@@ -31,9 +31,17 @@ public class JobServiceImpl implements JobService {
             if(jobshare.getId().equals(jobsearch)){
                 return jobshare;
             }
-            return  null;
+
 
         }
 return null;
+    }
+
+    @Override
+    public boolean DeleteJobByID(Long id) {
+       if(jobs.removeIf(job -> job.getId().equals(id))){
+           return true;
+       };
+       return false;
     }
 }
