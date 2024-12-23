@@ -10,23 +10,24 @@ import java.util.List;
 
 //We are using RestController because Response we are sending is the JSON Format
 @RestController
+@RequestMapping("/jobs")
 public class JobContoller
 {
      @Autowired
     JobService jobService;
 
-    @GetMapping("/jobs")
+    @GetMapping
     public List<job> givealljobs(){
        return jobService.getallJobs();
     }
 
-    @PostMapping("/jobs")
+    @PostMapping
     public String addjob(@RequestBody job jobadd){
       jobService.addJob(jobadd);
         return "The Job Added SucessFully";
     }
 
-    @GetMapping("/jobs/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<job> SearchjobByID(@PathVariable Long id){
         job jobs = jobService.getJobById(id);
         if(jobs != null){
@@ -46,5 +47,16 @@ public class JobContoller
 
 
 
+    }
+
+    @PostMapping("/jobs/{id}")
+    public ResponseEntity<String> UpdateJobById(@RequestBody job JobAdd,@PathVariable Long id){
+        boolean result = jobService.UpdateJobById(JobAdd,id);
+        if(result){
+            return new ResponseEntity<>("Job Updated SuccesFully",HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Id Not Fount To Update",HttpStatus.NOT_FOUND);
+        }
     }
 }

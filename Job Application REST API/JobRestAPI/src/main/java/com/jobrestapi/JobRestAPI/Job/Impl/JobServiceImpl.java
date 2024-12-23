@@ -6,6 +6,7 @@ import com.jobrestapi.JobRestAPI.Job.job;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -44,4 +45,31 @@ return null;
        };
        return false;
     }
-}
+
+    @Override
+    public boolean UpdateJobById(job jobAdd, Long id) {
+        Iterator<job> JobIterator = jobs.iterator();
+        while (JobIterator.hasNext()) {
+            job Jobs = JobIterator.next();
+            if (Jobs.getId().equals(id)) {
+                // Update only the non-null fields from jobAdd
+                if (jobAdd.getJob_description() != null) {
+                    Jobs.setJob_description(jobAdd.getJob_description());
+                }
+                if (jobAdd.getJob_title() != null) {
+                    Jobs.setJob_title(jobAdd.getJob_title());
+                }
+                if (jobAdd.getContact() != null) {
+                    Jobs.setContact(jobAdd.getContact());
+                }
+                if (jobAdd.getMin_salary() != null) {
+                    Jobs.setMin_salary(jobAdd.getMin_salary());
+                }
+                if (jobAdd.getMax_salary() != null) {
+                    Jobs.setMax_salary(jobAdd.getMax_salary());
+                }
+                return true; // Successfully updated
+            }
+        }
+        return false; // Job with the given ID not found
+    }}
