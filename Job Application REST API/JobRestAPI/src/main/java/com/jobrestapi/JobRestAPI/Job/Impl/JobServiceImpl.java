@@ -1,8 +1,10 @@
 package com.jobrestapi.JobRestAPI.Job.Impl;
 
 
+import com.jobrestapi.JobRestAPI.Job.JobRepository;
 import com.jobrestapi.JobRestAPI.Job.JobService;
 import com.jobrestapi.JobRestAPI.Job.job;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,39 +13,36 @@ import java.util.List;
 
 @Service
 public class JobServiceImpl implements JobService {
-    List<job> jobs = new ArrayList<>();
-    private  Long nextId = 1L ;
+
+    //Create an Object for Repo
+    @Autowired
+    JobRepository jobRepository ;
+
     @Override
     public List<job> getallJobs() {
-      return jobs;
+      return jobRepository.findAll();//Which will give all data from the respective table
     }
 
     @Override
     public void addJob(job Jobadd) {
         //Incrementing the ID for every calll for unique value
-        Jobadd.setId(nextId++);
-        jobs.add(Jobadd);
+       jobRepository.save(Jobadd);//this is used to create an Entity which is an row
 
     }
 
     @Override
     public job getJobById(Long jobsearch) {
-        for(job jobshare : jobs){
-            if(jobshare.getId().equals(jobsearch)){
-                return jobshare;
-            }
+       return jobRepository.findById(jobsearch).orElse(null);
+       //Because .finbyid is an optional class so wee should provide orElse
 
 
         }
-return null;
+
     }
 
     @Override
     public boolean DeleteJobByID(Long id) {
-       if(jobs.removeIf(job -> job.getId().equals(id))){
-           return true;
-       };
-       return false;
+
     }
 
     @Override

@@ -1,11 +1,23 @@
 package com.jobrestapi.JobRestAPI.Job;
 
 
+import jakarta.persistence.*;
+
 //Define the Model for Job Object
+@Entity
+@Table (name = "Table_Name")
 public class job {
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     private String Job_title;
     private String Job_description;
+    private  String min_salary;
+    private  String max_salary;
+
+
+    public job() {
+    }
 
     public job(Long id, String job_title, String job_description, String min_salary, String max_salary, String contact) {
         this.id = id;
@@ -15,9 +27,6 @@ public class job {
         this.max_salary = max_salary;
         this.Contact = contact;
     }
-
-    private  String min_salary;
-    private  String max_salary;
 
     public Long getId() {
         return id;
