@@ -7,9 +7,9 @@ import com.jobrestapi.JobRestAPI.Job.job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JobServiceImpl implements JobService {
@@ -38,37 +38,36 @@ public class JobServiceImpl implements JobService {
 
         }
 
-    }
+
 
     @Override
     public boolean DeleteJobByID(Long id) {
+        //In case of Deletebyid function which is not optional type so we need to handle the missing cases
+
+        try {
+            jobRepository.deleteById(id);
+            return  true;
+        } catch (Exception e) {
+          return false;
+        }
 
     }
 
     @Override
     public boolean UpdateJobById(job jobAdd, Long id) {
-        Iterator<job> JobIterator = jobs.iterator();
-        while (JobIterator.hasNext()) {
-            job Jobs = JobIterator.next();
-            if (Jobs.getId().equals(id)) {
-                // Update only the non-null fields from jobAdd
-                if (jobAdd.getJob_description() != null) {
-                    Jobs.setJob_description(jobAdd.getJob_description());
-                }
-                if (jobAdd.getJob_title() != null) {
-                    Jobs.setJob_title(jobAdd.getJob_title());
-                }
-                if (jobAdd.getContact() != null) {
-                    Jobs.setContact(jobAdd.getContact());
-                }
-                if (jobAdd.getMin_salary() != null) {
-                    Jobs.setMin_salary(jobAdd.getMin_salary());
-                }
-                if (jobAdd.getMax_salary() != null) {
-                    Jobs.setMax_salary(jobAdd.getMax_salary());
-                }
-                return true; // Successfully updated
-            }
+        //To find the Job by id we use optional Object
+
+        Optional<job> jobOptional = jobRepository.findById(id);
+        if(jobOptional.isPresent()){
+            job Jobs = jobOptional.get();
+            Jobs.setJob_description(jobAdd.getJob_description());
+            Jobs.setJob_title(jobAdd.getJob_title());
+            Jobs.setContact(jobAdd.getContact());
+            Jobs.setMin_salary(jobAdd.getMin_salary());
+            Jobs.setMax_salary(jobAdd.getMax_salary());
+            return true;
+
+
         }
         return false; // Job with the given ID not found
     }}
