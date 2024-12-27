@@ -65,6 +65,10 @@ public class JobServiceImpl implements JobService {
             Jobs.setContact(jobAdd.getContact());
             Jobs.setMin_salary(jobAdd.getMin_salary());
             Jobs.setMax_salary(jobAdd.getMax_salary());
+
+            //After setting and updating the Fields
+            //Save the Job
+            jobRepository.save(Jobs);
             return true;
 
 

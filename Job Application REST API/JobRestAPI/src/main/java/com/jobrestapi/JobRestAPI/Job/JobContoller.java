@@ -37,7 +37,7 @@ public class JobContoller
 
     }
 
-    @DeleteMapping("/jobs/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity  DeleteJobById(@PathVariable Long id){
        boolean result =  jobService.DeleteJobByID(id);
        if(result){
@@ -49,7 +49,7 @@ public class JobContoller
 
     }
 
-    @PostMapping("/jobs/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<String> UpdateJobById(@RequestBody job JobAdd,@PathVariable Long id){
         boolean result = jobService.UpdateJobById(JobAdd,id);
         if(result){
