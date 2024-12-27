@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 //Define the Model for Job Object
 @Entity
-@Table (name = "Table_Name")
+@Table (name = "Job_table")
 public class job {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
