@@ -52,7 +52,7 @@ export default function Slidebar() {
                 </Button>
             </Tab.Container>
             <Modal show={showModel} onHide={closeModal}>
-                 {conversationOpen ? <ConversationModal/> : <ContactModal closemodal={closeModal}  />}
+                 {conversationOpen ? <ConversationModal  /> : <ContactModal closemodal={closeModal}  />}
                 
             </Modal>
         </div>

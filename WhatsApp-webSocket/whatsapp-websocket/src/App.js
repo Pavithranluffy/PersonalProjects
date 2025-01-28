@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { setId } from "./Components/Slice/IdSlice";
 import Dashboard from "./Components/Dashboard";
 import { ContextContactProvider } from "./Components/context/ContactsProvider";
+import { ConversationProvider } from "./Components/context/ConversationProvider";
 function App() {
   const userId = useSelector((state) => state.userID);
   const [showDashboard, setDashBoard] = useState(false);
@@ -24,7 +25,10 @@ function App() {
     }
   }, [])
   const dashboard = (<ContextContactProvider>
+    <ConversationProvider>
     <Dashboard id={userId} />
+
+    </ConversationProvider>
   </ContextContactProvider>)
 
   // Ensure correct slice key
