@@ -11,7 +11,7 @@ export function useConversation(){
     return useContext(ConversationContext);
 }
 
-export function ConversationProvider({children}){
+export function ConversationProvider({children,id}){
     const [conversation,setConverstaion] = LocalStorage('conversation',[]);
     const [selectConversationIndex,setSelectConversationIndex] = useState(0);
     const {contact} = useContact();
@@ -20,6 +20,35 @@ export function ConversationProvider({children}){
             return[...prevconversation,{recipients,messages : []}]
         })
         
+    }
+    function addMessagetoConversation({recipients,text,sender}){
+        setConverstaion(prevconversation => {
+            let madeChange = false;
+            const newmessage = {sender,text};
+            const newConversation = prevconversation.map(conversation=>{
+                if(ArrayEquality(conversation.recipients,recipients)){
+                    madeChange = true;
+                    return {
+                        ...conversation,
+                        messages:[...conversation.messages,newmessage]
+                    }
+                }
+                return conversation;
+            })
+            if(madeChange){
+                return newConversation
+            }
+            else{
+                return[
+                    ...prevconversation,
+                    {recipients:recipients,messages:[newmessage]}
+                ]
+            }
+        })
+
+    }
+     function sendmessage(recipients,text){
+        addMessagetoConversation({recipients,text,sender : id })
     }
 
     //Now we can format our conversation into easy manner 
@@ -40,12 +69,27 @@ export function ConversationProvider({children}){
             };
         });
 
+        //To Format the Message
+        const messages = conversation.messages.map(message =>{
+
+            // Find the contact that matches this Message Sender
+            const foundContact = contact.find(contact => contact.id === message.sender);
+            // If contact found, use its name,
+            const name = ( foundContact && foundContact.name)
+            
+            //Check it The Message is From me or not 
+            const fromMe = id === message.sender
+            return{...message,senderName : name ,fromMe }
+
+        })
+
         //And also See this Current Conversation is selected 
         const selected  = index === selectConversationIndex;
     
         // Return a new conversation object with formatted recipients
         return {
             ...conversation, // Keep existing conversation properties
+            messages,//Send Messages In Proper Format
             recipients, // Add formatted recipients array
             selected //If this Conversation is selected
         };
@@ -53,6 +97,7 @@ export function ConversationProvider({children}){
     const value = {
         conversation : formattedConversations,
         currentConversation:formattedConversations[selectConversationIndex],//To Track the current conversatoin we are doing this 
+        sendmessage,
         selectConversationIndex : setSelectConversationIndex,
         createConversation
     }
@@ -61,4 +106,16 @@ export function ConversationProvider({children}){
         {children}
         </ConversationContext.Provider>
     )
+}
+
+
+function ArrayEquality(a,b){
+    if (a?.length !== b?.length) return true;
+    a.sort();
+    b.sort()
+
+    return a.every((element,index)=>{
+        return element === b[index];
+    })
+
 }

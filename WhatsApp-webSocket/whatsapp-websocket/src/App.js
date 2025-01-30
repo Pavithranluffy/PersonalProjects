@@ -25,7 +25,7 @@ function App() {
     }
   }, [])
   const dashboard = (<ContextContactProvider>
-    <ConversationProvider>
+    <ConversationProvider id={userId}>
     <Dashboard id={userId} />
 
     </ConversationProvider>
