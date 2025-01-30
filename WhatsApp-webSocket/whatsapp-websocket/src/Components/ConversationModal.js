@@ -2,15 +2,20 @@ import React, { useState } from 'react';
 import { Button, Form, FormGroup, Modal } from "react-bootstrap";
 import { useContact } from './context/ContactsProvider';
 import { useConversation } from './context/ConversationProvider';
-export default function ConversationModal({closeModal}){
+export default function ConversationModal({closemodal}){
     const [selectedcontactsid , setSelectedContactsids] = useState([]);
     const {contact} = useContact();
     const {createConversation} = useConversation();
-    function handleSubmit(e){
-        e.preventDefault();
-        createConversation(selectedcontactsid)
-        closeModal();
+    // function handleSubmit(e){
+    //     e.preventDefault();
+    //     createConversation(selectedcontactsid)
+    //     closeModal();
 
+    // }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        createConversation(selectedcontactsid);
+        closemodal();
     }
     function handleCheckchange(contactid){
         setSelectedContactsids(prevselectedcontactids =>{
