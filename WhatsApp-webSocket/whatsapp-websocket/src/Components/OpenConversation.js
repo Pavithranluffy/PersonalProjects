@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState,useRef, useCallback } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useConversation } from "./context/ConversationProvider";
 
 export function OpenConversation(){
     const [text,setText] = useState('');
+    const setRef = useCallback((node)=>{
+        if(node){
+            node.scrollIntoView({smooth:true});
+        }
+    },[])
     const {sendmessage,currentConversation} = useConversation();
     console.log("the CurrentConversation is "+JSON.stringify(currentConversation.recipients));
     
@@ -21,10 +26,11 @@ export function OpenConversation(){
     return(
         <div className="d-flex flex-column flex-grow-1">
             <div className="flex-grow-1 overflow-auto">
-            <div className="h-100 d-flex flex-column align-items-start justify-content-end px-3">
+            <div className="d-flex flex-column align-items-start justify-content-end px-3">
                 {currentConversation.messages.map((message,index)=>{
+                    const lastmessage = currentConversation.messages.length -1 === index; 
                     return(
-                        <div key={index} className="my-1 d-flex flex-column">
+                        <div ref={lastmessage ? setRef : null} key={index} className={`1my-1 d-flex flex-column ${message.fromMe ? 'align-self-end' : ''}`}>
                             <div className={`rounded px-2 py-2 ${message.fromMe ? 'bg-primary text-white': 'border'}`}>
                                 {message.text}
                             </div>
