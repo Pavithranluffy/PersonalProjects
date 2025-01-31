@@ -7,6 +7,7 @@ import { setId } from "./Components/Slice/IdSlice";
 import Dashboard from "./Components/Dashboard";
 import { ContextContactProvider } from "./Components/context/ContactsProvider";
 import { ConversationProvider } from "./Components/context/ConversationProvider";
+import { SocketProvider } from "./Components/context/SocketProvider";
 function App() {
   const userId = useSelector((state) => state.userID);
   const [showDashboard, setDashBoard] = useState(false);
@@ -24,12 +25,15 @@ function App() {
 
     }
   }, [])
-  const dashboard = (<ContextContactProvider>
+  const dashboard = (
+  <SocketProvider id={userId}>
+  <ContextContactProvider>
     <ConversationProvider id={userId}>
     <Dashboard id={userId} />
 
     </ConversationProvider>
-  </ContextContactProvider>)
+  </ContextContactProvider>
+  </SocketProvider>)
 
   // Ensure correct slice key
 
